@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <changeSet id="inventory-001" author="pradhan">
+        <createTable tableName="inventory_batch">
+            <column name="id" type="BIGINT">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="product_id" type="BIGINT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="product_name" type="VARCHAR(150)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quantity" type="INT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="expiry_date" type="DATE">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <createIndex tableName="inventory_batch"
+                     indexName="idx_batch_product_expiry">
+            <column name="product_id"/>
+            <column name="expiry_date"/>
+        </createIndex>
+    </changeSet>
+
+    <changeSet id="inventory-002" author="pradhan">
+        <loadData file="data/inventory-batches.csv"
+                  relativeToChangelogFile="true"
+                  tableName="inventory_batch"
+                  separator=","
+                  encoding="UTF-8">
+            <column name="id" type="NUMERIC"/>
+            <column name="product_id" type="NUMERIC"/>
+            <column name="product_name" type="STRING"/>
+            <column name="quantity" type="NUMERIC"/>
+            <column name="expiry_date" type="DATE"/>
+        </loadData>
+    </changeSet>
+</databaseChangeLog>
